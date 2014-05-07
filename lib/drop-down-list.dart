@@ -2,8 +2,8 @@ part of flex4dart;
 
 @Component (
     selector: 'fx-drop-down-list',
-    templateUrl: 'drop-down-list/drop-down-list.html',
-    cssUrl: 'drop-down-list/drop-down-list.css',
+    templateUrl: 'package/dart4flex/drop-down-list/drop-down-list.html',
+    cssUrl: 'package/dart4flex/drop-down-list/drop-down-list.css',
     publishAs: 'cmp'
 )
 class DropDownList implements ShadowRootAware {
