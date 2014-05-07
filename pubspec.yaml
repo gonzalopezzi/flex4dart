@@ -1,4 +1,7 @@
 name: dart4flex
-description: A web application
+description: Dart component library inspired by the Apache Flex component set
 dependencies:
   browser: any
+  angular: any
+  observe: any
+  shadow_dom: any

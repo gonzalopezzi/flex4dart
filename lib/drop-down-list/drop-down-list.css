@@ -1,0 +1,9 @@
+#main-div {
+  display: inline-block;
+}
+
+.drop-down-list-select {
+  padding: 10px;
+  border-radius: 0.5em;
+  border-color: #cccccc;
+}
