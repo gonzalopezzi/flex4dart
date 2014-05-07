@@ -1,0 +1,4 @@
+name: dart4flex
+description: A web application
+dependencies:
+  browser: any
