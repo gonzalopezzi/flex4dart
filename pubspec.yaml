@@ -1,7 +1,8 @@
-name: dart4flex
+name: flex4dart
 description: Dart component library inspired by the Apache Flex component set
 dependencies:
-  browser: any
   angular: any
+  browser: any
+  intl: any
   observe: any
   shadow_dom: any

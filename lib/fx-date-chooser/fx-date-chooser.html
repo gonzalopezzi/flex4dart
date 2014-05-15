@@ -1,0 +1,14 @@
+<div id="mainDiv">
+  <table id="day-table">
+    <thead>
+      <tr>
+        <th><button type="button" style="width:100%;height:25" ng-click="cmp.prevMonth()">&lt;</button></th>
+        <th colspan="5">{{cmp.monthLabel}}</th>
+        <th><button type="button" style="width:100%;height:25" ng-click="cmp.nextMonth()">&gt;</button></th>
+      </tr>
+      <tr id="week-day-row"></tr>
+    </thead>
+    <tbody id="day-table-body">
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,14 @@
+<div id="main-div">
+  <input id="date-text-input" 
+          type="text" 
+          readonly="true"
+          value="{{cmp.dateString}}"/><button id="btn-calendar">Cal</button>
+  <div class="calendar">
+    <date-chooser first-day-of-week="1" 
+        date-change="cmp.selectedDateChange"
+        selected-date="cmp.selectedDate"></calendar>
+    <div id="calendar-button-group">
+      <button id="btn-close">Close</button>
+    </div>
+  </div>
+</div>

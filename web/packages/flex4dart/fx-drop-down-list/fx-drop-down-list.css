@@ -1,0 +1,10 @@
+#fx-drop-down-list-main-div {
+  display: block;
+  margin: 0em 1em 1em 0;
+}
+
+.fx-drop-down-list-select {
+  padding: 10px;
+  border-radius: 0.5em;
+  border-color: #cccccc;
+}

@@ -1,0 +1,129 @@
+.fx-datagrid-main-div {
+  display: block;
+  position: relative;
+  height: calc(100% - 1em - 1px);
+  margin: 0 1em 1em 0;
+}
+
+.fx-datagrid-body {
+  display:block;
+  position:relative;
+  overflow: auto;
+  overflow-y: scroll;
+  border: solid 1px #AAAAAA;
+  height: calc(100% - 32px);
+}
+
+.fx-datagrid-data-div {
+  width:100%; 
+  height:5600px;
+}
+
+.fx-datagrid-virtual-rows-container {
+  position:absolute;
+  top:32px;
+  width:calc(100% - 15px);
+  height:calc(100% - 32px - 1px);
+  display:block;
+  overflow: hidden;
+  /*pointer-events:none;*/
+}
+
+/*.fx-datagrid-virtual-rows-div {
+  position:fixed;
+  width:580px;
+}*/
+
+.fx-datagrid-row {
+  display:block;
+  clear:left;
+  background-color: #FAFAFA;
+  /*border-bottom: solid 1px #AAAAAA;*/
+  text-align: center;
+  position:relative;
+  overflow:hidden;
+  padding-left: 5px;
+  padding-right: 5px;
+  height: auto;
+}
+
+.fx-datagrid-row-dark {
+  background-color: #F3F3F3;
+}
+
+/* The :hover selector cannot be used because mouse/touch events are disabled */
+.fx-datagrid-row-hover {
+  background-color: #CDDDFF;
+}
+
+.fx-datagrid-row-selected {
+  background-color: #BCCCEE;
+}
+
+.fx-datagrid-cell {
+  display:inline-block;
+  float:left;
+  top:0;
+  bottom:0;
+  width: calc(100% / 3);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  line-height: 32px;
+  height: 32px;
+  cursor: default;
+}
+
+/* Para poner estilos a una de las columnas. Esto se puede hacer desde código dart */
+.fx-datagrid-body > .fx-datagrid-row > .fx-datagrid-cell:nth-child(3) {
+  text-align: right;
+}
+
+.fx-datagrid-headers .fx-datagrid-cell {
+  cursor: pointer;
+  width: calc(100% / 3 - 20px / 3 - 4px);
+  font-weight: bold;
+}
+
+.fx-datagrid-headers {
+  background-color: #FFFFFF;
+  border-left: solid 1px #AAAAAA;
+  border-top: solid 1px #AAAAAA;
+  border-right: solid 1px #AAAAAA;
+  display:block;
+  overflow: auto;
+  height: auto;
+}
+
+.fx-datagrid-headers .fx-datagrid-headers-border {
+  display: inline-block;
+  float:left;
+  border-right: solid 1px #AAAAAA;
+  cursor: e-resize;
+  width: 4px;
+  height: 32px;
+}
+
+.fx-datagrid-headers .fx-datagrid-headers-scroll-gap {
+  display: inline-block;
+  float:left;
+  border-left: solid 1px #AAAAAA;
+  width: 0;
+  height: 32px;
+}
+
+.ascending-sort {
+  background: url(packages/flex4dart/fx-data-grid/img/arrow_up.png) no-repeat right top;
+}
+
+.descending-sort {
+  background: url(packages/flex4dart/fx-data-grid/img/arrow_down.png) no-repeat right top;
+}
+
+.fx-datagrid-row-end {
+  padding:0;
+  margin: 0;
+  height: 32px;   
+}
