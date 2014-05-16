@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 
 part 'events.dart';
 
+part 'fx-base/fx-list-base.dart';
+
 part 'fx-drop-down-list/fx-drop-down-list.dart';
 part 'fx-list/fx-list.dart';
 part 'fx-date-chooser/fx-date-chooser.dart';

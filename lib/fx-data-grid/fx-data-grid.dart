@@ -6,7 +6,7 @@ part of flex4dart;
     cssUrl: 'packages/flex4dart/fx-data-grid/fx-data-grid.css',
     publishAs: 'cmp'
 )
-class FxDataGrid implements ShadowRootAware, AttachAware, DetachAware {
+class FxDataGrid extends FxListBase implements ShadowRootAware, AttachAware, DetachAware {
   final String DEFAULT_HEIGHT = "20em";
   final int RESIZER_WIDTH = 4;
   final int SCROLL_WIDTH = 20;
@@ -15,48 +15,15 @@ class FxDataGrid implements ShadowRootAware, AttachAware, DetachAware {
   List<FxDataGridColumnElement> dataGridColumnElements = new List<FxDataGridColumnElement> ();
   List<FxDataGridColumn> columns = new List<FxDataGridColumn> ();
   
+  bool _mustRedraw = false;
+  
+  void set dataProvider (List dp) {
+    super.dataProvider = dp;
+    _mustRedraw = true;
+  }
+  
   @NgOneWay ('row-height')
   int rowHeight = 32;
-  
-  @observable
-  List _dataProvider;
-  @NgOneWay('data-provider')
-  void set dataProvider (Iterable dp) {
-    _dataProvider = dp;
-    (_dataProvider as ObservableList).listChanges.listen((_) {_resetScroll(); _refreshRows(); });
-    if (_datagrid != null) {
-      _displayItems();
-      _refreshRows();
-    }
-  }
-  
-  int _selectedIndex;
-  @NgTwoWay('selected-index')
-  void set selectedIndex (int selIndex) {
-    _selectedIndex = selIndex;
-    if (_selectedIndex != null && _dataProvider != null && 
-          _selectedItem != _dataProvider[_selectedIndex]) {
-      selectedItem = _dataProvider[_selectedIndex];
-    }
-    else {
-      _refreshRows();
-    }
-  }
-  int get selectedIndex => _selectedIndex;
-  
-  @observable Object _selectedItem;
-  @NgTwoWay('selected-item')
-  void set selectedItem (Object sel) {
-    _selectedItem = sel;
-    _refreshRows();
-  }
-  Object get selectedItem => _selectedItem;
-  
-  @NgOneWay ('width')
-  String width;
-  
-  @NgOneWay ('height')
-  String height;
   
   ShadowRoot _shadowRoot;
   
@@ -83,7 +50,26 @@ class FxDataGrid implements ShadowRootAware, AttachAware, DetachAware {
   bool _columnsReady = false;
   Element _element;
   
-  FxDataGrid (this._element);
+  FxDataGrid (Element _element) : super(_element) {
+    this._element = _element;
+  }
+  
+  void _dataProviderChangeHandler (List<ListChangeRecord> listChangeRecords) {
+    _resetScroll(); 
+    _refreshRows(); 
+  }
+  
+  void _updateDisplay () {
+    _displayItems();
+  }
+  
+  void _commitProperties () {
+    if (_mustRedraw) {
+      _mustRedraw = false;
+      _updateDisplay();
+    }
+    _refreshRows();
+  }
   
   void registerColumn (FxDataGridColumnElement dataGridColumnElement) {
     dataGridColumnElement.creationComplete.listen(columnCreatedHandler);
@@ -131,31 +117,6 @@ class FxDataGrid implements ShadowRootAware, AttachAware, DetachAware {
   void detach() {
     dataGridColumnElements = new List<FxDataGridColumnElement> ();
     _columnsReady = false;
-  }
-  
-  void _setupSize () {
-    if (width == null) {
-      _element.style..display = "block"
-                    ..width = null
-                    ..clear = "left";
-    }
-    else if (width.trim() == "100%") {
-      _element.style..display = "block"
-                    ..clear = "left"
-                    ..width = null;
-    }
-    else {
-      _element.style..display = "inline-block"
-                    ..float="left"
-                    ..width = width;
-    }
-    
-    if (height == null) {
-      _element.style.height = DEFAULT_HEIGHT;
-    }
-    else {
-      _element.style.height = height;
-    }
   }
   
   List<FxDataGridColumn> _getColumnsFromElements() {
