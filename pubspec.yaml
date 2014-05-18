@@ -2,6 +2,7 @@ name: flex4dart
 description: Dart component library inspired by the Apache Flex component set
 dependencies:
   angular: any
+  animation: any
   browser: any
   intl: any
   observe: any

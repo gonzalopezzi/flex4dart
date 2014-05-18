@@ -4,6 +4,7 @@ import 'package:angular/angular.dart';
 import 'dart:html';
 import 'dart:mirrors';
 import 'dart:async';
+import 'package:animation/animation.dart';
 import 'package:observe/observe.dart';
 import 'package:intl/intl.dart';
 

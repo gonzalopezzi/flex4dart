@@ -18,8 +18,14 @@ class FxDataGrid extends FxListBase implements ShadowRootAware, AttachAware, Det
   bool _mustRedraw = false;
   
   void set dataProvider (List dp) {
-    super.dataProvider = dp;
-    _mustRedraw = true;
+    _dataProvider = toObservable (dp);
+    if (_dataProvider != null) {
+      (_dataProvider as ObservableList).listChanges.listen(_dataProviderChangeHandler);
+    }
+    if (_element != null) {
+      _mustRedraw = true;
+      _commitProperties();
+    }
   }
   
   @NgOneWay ('row-height')
@@ -40,6 +46,7 @@ class FxDataGrid extends FxListBase implements ShadowRootAware, AttachAware, Det
   /* Scroll */
   int _itemScrollStart;
   int _itemScrollEnd;
+  bool _scrollReady = false;
   
   int _rowHover;
   
@@ -60,15 +67,29 @@ class FxDataGrid extends FxListBase implements ShadowRootAware, AttachAware, Det
   }
   
   void _updateDisplay () {
-    _displayItems();
+    if (_shadowRoot != null) 
+      _displayItems();
   }
   
   void _commitProperties () {
-    if (_mustRedraw) {
-      _mustRedraw = false;
-      _updateDisplay();
+    if (_shadowRoot != null) {
+      if (_mustRedraw) {
+        _mustRedraw = false;
+        _updateDisplay();
+      }
+      _refreshRows();
+      _moveScrollToSelection();
     }
-    _refreshRows();
+  }
+  
+  void _moveScrollToSelection () {
+    /* If _selectedIndex is out of sight, animate the scroll to that position */
+    if (_scrollReady && _selectedIndex != null && (_selectedIndex < _itemScrollStart || _selectedIndex > _itemScrollEnd)) {
+      var properties = {
+        'scrollTop': _selectedIndex * rowHeight
+      };
+      animate (_datagridBody, properties: properties, duration: 1000);
+    }
   }
   
   void registerColumn (FxDataGridColumnElement dataGridColumnElement) {
@@ -197,15 +218,19 @@ class FxDataGrid extends FxListBase implements ShadowRootAware, AttachAware, Det
     if (_itemScrollEnd >= _dataProvider.length) {
       _itemScrollEnd = _dataProvider.length - 1;
     }
+    _scrollReady = true;
     _populateCells (_itemScrollStart, _itemScrollEnd);
   }
   
   void _refreshRows () {
-    if (_datagridBody != null && _columnsReady) 
-      _populateDataProvider(_datagridBody.scrollTop, _datagridBody.offsetHeight);  
+    if (_datagridBody != null && _columnsReady) {
+      _setDataDivHeight(_dataProvider, rowHeight);
+      _populateDataProvider(_datagridBody.scrollTop, _datagridBody.offsetHeight);
+    }
   }
   
   void _resetScroll () {
+    _scrollReady = false;
     if (_datagridBody != null)
       _datagridBody.scrollTop = 0;    
   }
@@ -352,7 +377,7 @@ class FxDataGrid extends FxListBase implements ShadowRootAware, AttachAware, Det
     return out;
   }
   
-  void setDataDivHeight (List _dataProvider, int rowHeight) {
+  void _setDataDivHeight (List _dataProvider, int rowHeight) {
     _datagridDataDiv..style.height = "${_dataProvider.length * rowHeight}px";
   }
   
@@ -361,7 +386,8 @@ class FxDataGrid extends FxListBase implements ShadowRootAware, AttachAware, Det
     _rowElements = new List<Element> ();
     int rowCount = 0;
     int howManyRows = calculateHowManyRows (_dataProvider, rowHeight, _datagrid.offsetHeight);
-    setDataDivHeight(_dataProvider, rowHeight);
+    _setDataDivHeight(_dataProvider, rowHeight);
+    _datagridVirtualRowsContainer.children.clear();
     for (int i = 0; i < howManyRows; i++) {
       Object obj = _dataProvider[i];
       int clickIndex = rowCount;

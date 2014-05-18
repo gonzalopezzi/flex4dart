@@ -13,6 +13,11 @@ class FxList extends FxListBase implements ShadowRootAware {
   @NgOneWay('label-field')
   String labelField;
   
+  int _rowHeight;
+  int _itemScrollStart;
+  int _itemScrollEnd;
+  bool _scrollReady;
+  
   Element _element;
   DivElement _mainDiv;
   
@@ -22,6 +27,33 @@ class FxList extends FxListBase implements ShadowRootAware {
   
   void _commitProperties() {
     _updateDisplay();
+    _computeRowHeightAndScrollBoundaries();
+    _moveScrollToSelection();
+  }
+  
+  void _computeRowHeightAndScrollBoundaries () {
+    if (_mainDiv != null && _mainDiv.children.length > 0) {
+      _rowHeight = _mainDiv.children[0].offsetHeight;
+      _itemScrollStart = (_mainDiv.scrollTop / _rowHeight).floor();
+      _itemScrollEnd = ((_mainDiv.scrollTop + _mainDiv.offsetHeight) / _rowHeight).floor();
+      _scrollReady = true;
+    }
+    else {
+      _rowHeight = null;
+      _itemScrollStart = null;
+      _itemScrollEnd = null;
+      _scrollReady = false;
+    }
+  }
+  
+  void _moveScrollToSelection () {
+    /* If _selectedIndex is out of sight, animate the scroll to that position */
+    if (_scrollReady && _selectedIndex != null && (_selectedIndex < _itemScrollStart || _selectedIndex > _itemScrollEnd)) {
+      var properties = {
+        'scrollTop': _selectedIndex * _rowHeight
+      };
+      animate (_mainDiv, properties: properties, duration: 1000);
+    }
   }
   
   void _updateDisplay() {
