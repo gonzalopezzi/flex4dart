@@ -6,7 +6,7 @@ part of flex4dart;
     cssUrl: 'packages/flex4dart/fx-date-chooser/fx-date-chooser.css',
     publishAs: 'cmp'
 )
-class DateChooser implements ShadowRootAware {
+class FxDateChooser implements ShadowRootAware {
   DateTime _selectedDate;
   
   @NgCallback('date-change')
@@ -37,9 +37,7 @@ class DateChooser implements ShadowRootAware {
   
   ShadowRoot _shadowRoot;
   
-  Calendar () {
-    
-    
+  FxDateChooser () {
   }
   
   void onShadowRoot (ShadowRoot shadowRoot) { 

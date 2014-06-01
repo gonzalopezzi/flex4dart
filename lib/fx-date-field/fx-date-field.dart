@@ -6,7 +6,7 @@ part of flex4dart;
     cssUrl: 'packages/flex4dart/fx-date-field/fx-date-field.css',
     publishAs: 'cmp'
 )
-class DateField implements ShadowRootAware {
+class FxDateField implements ShadowRootAware {
   ShadowRoot _shadowRoot;
   ButtonElement _btnCalendar; 
   DivElement _divCalendar;
